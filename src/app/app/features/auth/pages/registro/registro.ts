@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  // RouterLink no se usa en el HTML => lo quitamos para evitar el warning NG8113
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './registro.html',
   styleUrls: ['./registro.css']
 })
 export class RegistroComponent {
   form: FormGroup;
+  private auth = inject(AuthService); // ✅ Inyectamos el servicio
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -21,8 +22,16 @@ export class RegistroComponent {
     });
   }
 
+  // 🔹 Este método se ejecuta al enviar el formulario
   onSubmit() {
-    if (this.form.invalid) return;
-    console.log('registro', this.form.value);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    console.log('Registro exitoso:', this.form.value);
+
+    // ✅ Crea usuario demo y redirige automáticamente al dashboard
+    this.auth.registerAndLoginAuto();
   }
 }
