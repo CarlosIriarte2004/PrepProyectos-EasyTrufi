@@ -95,3 +95,31 @@ small{ display:block; margin-top:6px; color:#8c2d2d; }
   .logo-frame{ width:140px; height:140px; border-radius:22px; }
   h1{ font-size:26px; }
 }
+
+/* --- Añadidos para el modo UID y accesibilidad --- */
+.alt-mode {
+  text-align: center;
+  margin-bottom: 14px;
+}
+.alt-mode .link {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #0e3f39;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.error {
+  margin-top: 12px;
+  color: #8c2d2d;
+  text-align: center;
+}
+
+input::placeholder { color: #89a9a5; }
+
+.password .toggle:focus {
+  outline: 2px solid #84c9be;
+  outline-offset: 2px;
+  border-radius: 8px;
+}

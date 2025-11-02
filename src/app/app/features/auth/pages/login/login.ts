@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../../../../core/services/auth.service'; // ajustá el path si difiere
+import { AuthService } from '../../../../../core/services/auth.service';
 
 type LoginForm = FormGroup<{
   email: FormControl<string>;
@@ -19,8 +19,13 @@ type LoginForm = FormGroup<{
 })
 export class LoginComponent {
   form: LoginForm;
+  uidForm = new FormGroup({
+    uidTarjeta: new FormControl('', { nonNullable: true, validators: [Validators.required] })
+  });
   hide = true;
   loading = false;
+  useCard = false;
+  errorMsg = '';
 
   constructor(private auth: AuthService) {
     this.form = new FormGroup({
@@ -33,15 +38,31 @@ export class LoginComponent {
   get f(): LoginForm['controls'] { return this.form.controls; }
 
   async onSubmit() {
+    this.errorMsg = '';
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
     this.loading = true;
     try {
-      // ⚠️ Mantengo la simulación, pero ahora usando el servicio y “remember”
       const { email, remember } = this.form.getRawValue();
-      await new Promise(r => setTimeout(r, 400)); // demo delay
-      this.auth.login(email, remember); // ⬅️ ahora pasa el modo de almacenamiento
+      await new Promise(r => setTimeout(r, 300)); // demo delay
+      this.auth.login(email, remember);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async onSubmitCard() {
+    this.errorMsg = '';
+    this.uidForm.markAllAsTouched();
+    if (this.uidForm.invalid) return;
+
+    this.loading = true;
+    try {
+      const { uidTarjeta } = this.uidForm.getRawValue();
+      await new Promise(r => setTimeout(r, 300)); // demo delay
+      const ok = this.auth.loginByCard(uidTarjeta!);
+      if (!ok) this.errorMsg = 'UID no reconocido. Registrá tu tarjeta primero.';
     } finally {
       this.loading = false;
     }

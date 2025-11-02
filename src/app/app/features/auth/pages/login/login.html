@@ -7,16 +7,19 @@
     <h1>EasyTrufi</h1>
     <p class="sub">Bienvenido de nuevo</p>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="alt-mode">
+      <button type="button" class="link" (click)="useCard = !useCard">
+        {{ useCard ? 'Usar email y contraseña' : 'Ingresar con tarjeta (UID)' }}
+      </button>
+    </div>
+
+    <!-- Login clásico -->
+    <form *ngIf="!useCard" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="field">
         <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="tu@email.com"
-          [class.invalid]="f.email.touched && f.email.invalid"
-        />
+        <input id="email" type="email" formControlName="email"
+               placeholder="tu@email.com"
+               [class.invalid]="f.email.touched && f.email.invalid" />
         <small *ngIf="f.email.touched && f.email.errors?.['required']">El email es obligatorio.</small>
         <small *ngIf="f.email.touched && f.email.errors?.['email']">Formato de email no válido.</small>
       </div>
@@ -24,21 +27,15 @@
       <div class="field">
         <label for="password">Contraseña</label>
         <div class="password">
-          <input
-            id="password"
-            [type]="hide ? 'password' : 'text'"
-            formControlName="password"
-            placeholder="********"
-            [class.invalid]="f.password.touched && f.password.invalid"
-          />
+          <input id="password" [type]="hide ? 'password' : 'text'" formControlName="password"
+                 placeholder="********"
+                 [class.invalid]="f.password.touched && f.password.invalid" />
           <button type="button" class="toggle" (click)="togglePassword()" aria-label="Mostrar/ocultar contraseña">
             {{ hide ? '👁️' : '🙈' }}
           </button>
         </div>
         <small *ngIf="f.password.touched && f.password.errors?.['required']">La contraseña es obligatoria.</small>
-        <small *ngIf="f.password.touched && f.password.errors?.['minlength']">
-          Debe tener al menos 6 caracteres.
-        </small>
+        <small *ngIf="f.password.touched && f.password.errors?.['minlength']">Debe tener al menos 6 caracteres.</small>
       </div>
 
       <div class="row">
@@ -46,7 +43,6 @@
           <input type="checkbox" formControlName="remember" />
           Recordarme
         </label>
-
         <a routerLink="/" class="link">¿Olvidaste tu contraseña?</a>
       </div>
 
@@ -59,5 +55,27 @@
         <a routerLink="/registro" class="link">Crear cuenta</a>
       </p>
     </form>
+
+    <!-- Login por tarjeta -->
+    <form *ngIf="useCard" [formGroup]="uidForm" (ngSubmit)="onSubmitCard()" novalidate>
+      <div class="field">
+        <label for="uidTarjeta">UID de la tarjeta</label>
+        <input id="uidTarjeta" type="text" formControlName="uidTarjeta" placeholder="Ej. 04A2-7F9C-1B" />
+        <small *ngIf="uidForm.get('uidTarjeta')?.touched && uidForm.get('uidTarjeta')?.invalid">
+          Ingresá el UID de tu tarjeta.
+        </small>
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="loading || uidForm.invalid">
+        {{ loading ? 'Verificando…' : 'Ingresar con tarjeta' }}
+      </button>
+
+      <p class="hint">
+        ¿No tenés cuenta?
+        <a routerLink="/registro" class="link">Crear cuenta</a>
+      </p>
+    </form>
+
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
   </div>
 </div>

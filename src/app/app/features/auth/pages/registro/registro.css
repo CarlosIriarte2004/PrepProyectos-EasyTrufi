@@ -40,7 +40,7 @@ label {
   margin-bottom: 6px;
 }
 
-input {
+input, select {
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -50,14 +50,22 @@ input {
   font-size: 14px;
 }
 
-input::placeholder {
-  color: #b6dfd9;
+input::placeholder { color: #bfeee8; }
+
+select { appearance: none; }
+
+select:focus, input:focus {
+  border-color: #b7ffee;
+  box-shadow: 0 0 0 3px rgba(183, 255, 238, 0.15);
+  background: rgba(255, 255, 255, 0.14);
 }
 
-.error small {
-  color: #ff9b9b;
-  font-size: 12px;
-}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+.error { margin-top: 6px; }
+.error small { color: #ff9b9b; font-size: 12px; }
 
 .btn {
   width: 100%;
@@ -71,14 +79,8 @@ input::placeholder {
   transition: background 0.2s;
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn:hover:not(:disabled) {
-  background: #12796d;
-}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:hover:not(:disabled) { background: #12796d; }
 
 .footnote {
   text-align: center;
@@ -90,4 +92,21 @@ input::placeholder {
   color: #b7ffee;
   text-decoration: none;
   font-weight: 700;
+}
+
+select {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Color del texto de las opciones desplegadas */
+select option {
+  color: #0a433e;          /* texto oscuro dentro del desplegable */
+  background-color: #eafffb; /* fondo claro al abrir el menú */
+}
+
+/* Hover más visible */
+select option:hover {
+  background-color: #c8f5ef;
+  color: #06322f;
 }
