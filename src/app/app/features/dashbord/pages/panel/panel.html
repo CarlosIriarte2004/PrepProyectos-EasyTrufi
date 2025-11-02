@@ -1,41 +1,231 @@
-<div class="wrap">
-  <div class="card">
-    <header class="top">
-      <div class="brand">
-        <img src="assets/Logo.png" alt="EasyTrufi" />
-        <h1>EasyTrufi</h1>
-      </div>
+<div class="layout" [class.collapse]="!sidebarOpen">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/Logo.png" alt="EasyTrufi" />
+      <span>EasyTrufi</span>
+    </div>
 
-      <nav class="nav">
-        <a class="link active">Inicio</a>
-        <a class="link">Recargas</a>
-        <a class="link">Puntos físicos</a>
-        <a class="link">Seguridad</a>
-      </nav>
+    <nav class="menu">
+      <button class="item" [class.active]="is('inicio')" (click)="setSection('inicio')">Inicio</button>
+      <button class="item" [class.active]="is('recargas')" (click)="setSection('recargas')">Recargas</button>
+      <button class="item" [class.active]="is('puntos')" (click)="setSection('puntos')">Puntos físicos</button>
+      <button class="item" [class.active]="is('seguridad')" (click)="setSection('seguridad')">Seguridad</button>
+      <button class="item" [class.active]="is('ayuda')" (click)="setSection('ayuda')">Ayuda</button>
+    </nav>
+
+    <div class="foot">
+      <small>v0.1 • Demo visual</small>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="topbar">
+      <button class="icon" (click)="toggleSidebar()">☰</button>
+      <div class="top-actions">
+        <button class="pill">Soporte</button>
+        <a class="pill outline" href="/">Salir</a>
+      </div>
     </header>
 
-    <section class="grid">
-      <article class="tile">
-        <h3>Saldo</h3>
-        <p class="value">Bs 120.50</p>
-        <small>Última recarga: hoy 14:12</small>
-      </article>
+    <!-- INICIO -->
+    <section class="section" *ngIf="is('inicio')">
+      <div class="hero">
+        <div class="hero-text">
+          <h1>Movete más fácil con <span>EasyTrufi</span></h1>
+          <p class="lead">
+            Pagá tu pasaje con tarjeta NFC y olvidate del efectivo.
+            Consultá saldo, recargá y revisá tus movimientos en una
+            plataforma pensada para el transporte urbano.
+          </p>
 
-      <article class="tile">
-        <h3>Recargas rápidas</h3>
-        <button class="btn">Bs 10</button>
-        <button class="btn">Bs 20</button>
-        <button class="btn">Bs 50</button>
-      </article>
+          <div class="actions">
+            <a class="pill ghost" href="#">Conocer más</a>
+            <a class="pill" href="/login">Iniciar sesión</a>
+          </div>
 
-      <article class="tile">
-        <h3>Movimientos</h3>
-        <ul class="list">
-          <li>Pago bus · Bs 2.00</li>
-          <li>Recarga · Bs 20.00</li>
-          <li>Pago bus · Bs 2.00</li>
-        </ul>
-      </article>
+          <ul class="bullets">
+            <li>Validadores en buses y estaciones con lectura inmediata.</li>
+            <li>Registro de viajes y sincronización en tiempo real.</li>
+            <li>Panel web en Angular para usuarios y administración.</li>
+          </ul>
+        </div>
+
+        <!-- ✅ Imagen principal desde assets -->
+        <div class="hero-media">
+          <img
+            class="photo"
+            src="assets/Tarjeta-Mano.png"
+            alt="Pago con tarjeta EasyTrufi"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      <div class="grid3">
+        <article class="tile">
+          <h3>¿Qué resuelve?</h3>
+          <p>
+            Reduce colas, elimina manejo de efectivo y mejora la trazabilidad de ingresos.
+            Ideal para operadores, conductores y usuarios finales.
+          </p>
+          <ul>
+            <li>Menos tiempos de abordaje.</li>
+            <li>Control de caja por turno y línea.</li>
+            <li>Reportes automáticos diarios.</li>
+          </ul>
+        </article>
+
+        <article class="tile">
+          <h3>Cómo funciona</h3>
+          <ol>
+            <li>El usuario aproxima la tarjeta al validador.</li>
+            <li>Se descuenta el pasaje y se guarda el viaje.</li>
+            <li>La información se sincroniza con la nube.</li>
+          </ol>
+          <p>Todo el flujo es auditable y visible desde el panel.</p>
+        </article>
+
+        <article class="tile">
+          <h3>Próximamente</h3>
+          <ul>
+            <li>Recarga online con billetera digital.</li>
+            <li>Historial detallado por día y por bus.</li>
+            <li>Alertas de bajo saldo en la app.</li>
+          </ul>
+        </article>
+      </div>
     </section>
-  </div>
+
+    <!-- RECARGAS -->
+    <section class="section" *ngIf="is('recargas')">
+      <h1>Recargas</h1>
+      <p class="lead">
+        Acreditá saldo en puntos autorizados y pronto desde la web.
+        La recarga se acredita en segundos para tu próximo viaje.
+      </p>
+
+      <div class="grid2">
+        <article class="tile">
+          <h3>Canales presenciales</h3>
+          <ul>
+            <li>Kioscos y tiendas asociadas.</li>
+            <li>Terminales y estaciones principales.</li>
+            <li>Soporte en punto para resolver dudas.</li>
+          </ul>
+        </article>
+
+        <article class="tile">
+          <h3>Medios de pago</h3>
+          <ul>
+            <li>Efectivo y tarjeta.</li>
+            <li>Transferencia o QR (piloto).</li>
+            <li>Comprobantes digitales.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="callout">
+        ¿Tenés inconvenientes con una recarga?
+        Conservá el comprobante y escribinos por Soporte.
+      </div>
+    </section>
+
+    <!-- PUNTOS FÍSICOS -->
+    <section class="section" *ngIf="is('puntos')">
+      <h1>Puntos físicos</h1>
+      <p class="lead">Ubicaciones de alto tránsito para recarga y soporte al usuario.</p>
+
+      <div class="grid2">
+        <article class="tile">
+          <h3>Servicios en puntos</h3>
+          <ul>
+            <li>Compra y reposición de tarjetas.</li>
+            <li>Recargas rápidas.</li>
+            <li>Soporte técnico presencial.</li>
+          </ul>
+        </article>
+
+        <article class="tile">
+          <h3>Zonas habituales</h3>
+          <ul>
+            <li>Terminales y estaciones.</li>
+            <li>Centros comerciales.</li>
+            <li>Avenidas principales.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- SEGURIDAD -->
+    <section class="section" *ngIf="is('seguridad')">
+      <h1>Seguridad</h1>
+      <p class="lead">Protegemos tus datos y movimientos con buenas prácticas y monitoreo.</p>
+
+      <div class="grid2">
+        <article class="tile">
+          <h3>Protecciones</h3>
+          <ul>
+            <li>Autenticación por credenciales personales.</li>
+            <li>Sesiones protegidas y cierre remoto.</li>
+            <li>Bloqueo de tarjeta en caso de pérdida.</li>
+            <li>Registro de movimientos y alertas.</li>
+          </ul>
+        </article>
+
+        <article class="tile">
+          <h3>Recomendaciones</h3>
+          <ul>
+            <li>No compartas tu tarjeta ni tu contraseña.</li>
+            <li>Evitá imanes fuertes cerca de la tarjeta.</li>
+            <li>Reportá anomalías desde Soporte.</li>
+            <li>Mantené tus contactos actualizados.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="note">
+        ¿Perdiste tu tarjeta? Bloqueala desde Soporte y recuperá tu saldo asociado a tu identidad.
+      </div>
+    </section>
+
+    <!-- AYUDA -->
+    <section class="section" *ngIf="is('ayuda')">
+      <h1>Ayuda</h1>
+      <p class="lead">
+        Encontrá guías rápidas, respuestas a preguntas frecuentes y canales de contacto para soporte.
+      </p>
+
+      <div class="grid3">
+        <article class="tile">
+          <h3>FAQ</h3>
+          <ul>
+            <li>¿Cómo obtengo mi tarjeta?</li>
+            <li>¿Dónde recargo y cuánto tarda?</li>
+            <li>¿Cómo recupero saldo si perdí la tarjeta?</li>
+          </ul>
+        </article>
+
+        <article class="tile">
+          <h3>Soporte en línea</h3>
+          <p>Atención de lunes a sábado en horario extendido.</p>
+          <ul>
+            <li>Chat y correo.</li>
+            <li>Seguimiento de casos.</li>
+          </ul>
+        </article>
+
+        <article class="tile">
+          <h3>Contactos</h3>
+          <ul>
+            <li>Correo: soporte@easytrufi.bo</li>
+            <li>Teléfono: 800-123-456</li>
+            <li>Redes y novedades.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
 </div>
