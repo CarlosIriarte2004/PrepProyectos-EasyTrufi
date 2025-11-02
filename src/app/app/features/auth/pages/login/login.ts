@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  Validators,
-  FormGroup,
-  FormControl
-} from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../../../core/services/auth.service'; // ajustá el path si difiere
 
 type LoginForm = FormGroup<{
   email: FormControl<string>;
@@ -26,24 +22,15 @@ export class LoginComponent {
   hide = true;
   loading = false;
 
-  constructor(private router: Router) {
+  constructor(private auth: AuthService) {
     this.form = new FormGroup({
-      email: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.email]
-      }),
-      password: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(6)]
-      }),
+      email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+      password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
       remember: new FormControl(false, { nonNullable: true })
     });
   }
 
-  // Autocompletado fuerte en el template
-  get f(): LoginForm['controls'] {
-    return this.form.controls;
-  }
+  get f(): LoginForm['controls'] { return this.form.controls; }
 
   async onSubmit() {
     this.form.markAllAsTouched();
@@ -51,12 +38,10 @@ export class LoginComponent {
 
     this.loading = true;
     try {
-      // Simulación; acá luego va la llamada real a Sanity/Backend
-      await new Promise(r => setTimeout(r, 600));
-      localStorage.setItem('et_logged', '1');
-
-      // ⬇️ Redirige al panel principal del negocio
-      this.router.navigateByUrl('/dashboard');
+      // ⚠️ Mantengo la simulación, pero ahora usando el servicio y “remember”
+      const { email, remember } = this.form.getRawValue();
+      await new Promise(r => setTimeout(r, 400)); // demo delay
+      this.auth.login(email, remember); // ⬅️ ahora pasa el modo de almacenamiento
     } finally {
       this.loading = false;
     }
@@ -64,4 +49,3 @@ export class LoginComponent {
 
   togglePassword() { this.hide = !this.hide; }
 }
-
