@@ -25,9 +25,24 @@
       <button class="icon" (click)="toggleSidebar()">☰</button>
       <div class="top-actions">
         <button class="pill">Soporte</button>
-        <a class="pill outline" href="/">Salir</a>
+        <button class="pill outline" (click)="logout()">Salir</button>
       </div>
     </header>
+
+    <!-- BANNER DE USUARIO (si hay sesión) -->
+    <section class="section" *ngIf="user as u">
+      <div class="callout" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <div>
+          <strong>{{ u.nombre || 'Usuario' }}</strong><br>
+          <small>{{ u.email }}</small>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:18px;flex-wrap:wrap">
+          <span><strong>UID:</strong> {{ u.uidTarjeta || '—' }}</span>
+          <span><strong>Saldo:</strong> Bs. {{ u.saldo ?? 0 }}</span>
+          <span><strong>Beneficio:</strong> {{ u.beneficio || 'ninguno' }}</span>
+        </div>
+      </div>
+    </section>
 
     <!-- INICIO -->
     <section class="section" *ngIf="is('inicio')">
@@ -52,15 +67,8 @@
           </ul>
         </div>
 
-        <!-- ✅ Imagen principal desde assets -->
         <div class="hero-media">
-          <img
-            class="photo"
-            src="assets/Tarjeta-Mano.png"
-            alt="Pago con tarjeta EasyTrufi"
-            loading="eager"
-            decoding="async"
-          />
+          <img class="photo" src="assets/Tarjeta-Mano.png" alt="Pago con tarjeta EasyTrufi" loading="eager" decoding="async"/>
         </div>
       </div>
 
@@ -109,27 +117,28 @@
 
       <div class="grid2">
         <article class="tile">
-          <h3>Canales presenciales</h3>
-          <ul>
-            <li>Kioscos y tiendas asociadas.</li>
-            <li>Terminales y estaciones principales.</li>
-            <li>Soporte en punto para resolver dudas.</li>
-          </ul>
+          <h3>Recarga directa (demo)</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <input type="number" min="1" [(ngModel)]="recargaMonto" placeholder="Monto Bs." style="max-width:160px">
+            <button class="pill" [disabled]="loading" (click)="recargar()">
+              {{ loading ? 'Procesando…' : 'Acreditar' }}
+            </button>
+          </div>
+          <p *ngIf="message" style="margin-top:8px"><small>{{ message }}</small></p>
         </article>
 
         <article class="tile">
-          <h3>Medios de pago</h3>
-          <ul>
-            <li>Efectivo y tarjeta.</li>
-            <li>Transferencia o QR (piloto).</li>
-            <li>Comprobantes digitales.</li>
-          </ul>
+          <h3>Cambiar beneficio</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="pill outline" *ngFor="let b of beneficios" (click)="cambiarBeneficio(b)">
+              {{ b }}
+            </button>
+          </div>
         </article>
       </div>
 
       <div class="callout">
-        ¿Tenés inconvenientes con una recarga?
-        Conservá el comprobante y escribinos por Soporte.
+        ¿Tenés inconvenientes con una recarga? Conservá el comprobante y escribinos por Soporte.
       </div>
     </section>
 
