@@ -29,8 +29,8 @@
       </div>
     </header>
 
-    <!-- BANNER DE USUARIO (si hay sesión) -->
-    <section class="section" *ngIf="user as u">
+    <!-- BANNER DE USUARIO (reactivo con async) -->
+    <section class="section" *ngIf="user$ | async as u">
       <div class="callout" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
         <div>
           <strong>{{ u.nombre || 'Usuario' }}</strong><br>

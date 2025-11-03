@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// 👇 OJO: 5 niveles arriba porque estás en src/app/app/features/dashbord/pages/panel
 import { AuthService } from '../../../../../core/services/auth.service';
 import { UsersApi, UserDTO, Beneficio } from '../../../../../core/services/users.api';
 
@@ -20,12 +19,13 @@ export class DashboardPanelComponent {
   sidebarOpen = true;
   section: Section = 'inicio';
 
-  // Servicios (tipados)
+  // Servicios
   private auth: AuthService = inject(AuthService);
   private usersApi: UsersApi = inject(UsersApi);
 
-  // Usuario en sesión
-  user: Partial<UserDTO> | null = this.auth.getCurrentUser();
+  // Sesión reactiva
+  user$ = this.auth.currentUser$;
+  user = this.auth.getCurrentUser();
 
   // Recarga
   recargaMonto: number | null = null;
@@ -33,6 +33,11 @@ export class DashboardPanelComponent {
   message = '';
 
   beneficios: Beneficio[] = ['ninguno', 'estudiantil', 'tercera_edad', 'discapacidad'];
+
+  ngOnInit() {
+    this.auth.bootstrapFromStorage();
+    this.user$.subscribe(u => this.user = u);
+  }
 
   toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; }
   setSection(s: Section) { this.section = s; requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' })); }
@@ -42,38 +47,39 @@ export class DashboardPanelComponent {
 
   recargar() {
     this.message = '';
-    if (!this.user?.id) { this.message = 'No hay usuario en sesión.'; return; }
+    const u = this.user;
+    if (!u?.id) { this.message = 'No hay usuario en sesión.'; return; }
+
     const monto = Number(this.recargaMonto ?? 0);
     if (!(monto > 0)) { this.message = 'Ingresá un monto válido (> 0).'; return; }
 
-    const nuevoSaldo = Number(this.user.saldo ?? 0) + monto;
-
+    const nuevoSaldo = Number(u.saldo ?? 0) + Math.ceil(monto);
     this.loading = true;
-    this.usersApi.update(this.user.id, { saldo: nuevoSaldo }).subscribe({
-      next: (u: UserDTO) => {
-        this.user = { ...this.user, ...u };
-        this.auth.registerDemo(u); // refresca localStorage
+
+    this.usersApi.updateSafe(u.id, { saldo: nuevoSaldo }).subscribe({
+      next: (updated: UserDTO) => {
+        this.auth.setUser({ ...updated, loginAt: new Date().toISOString() });
         this.recargaMonto = null;
         this.message = 'Saldo recargado correctamente.';
-        this.loading = false;
       },
-      error: () => { this.message = 'No se pudo actualizar el saldo.'; this.loading = false; }
+      error: () => { this.message = 'No se pudo actualizar el saldo.'; },
+      complete: () => { this.loading = false; }
     });
   }
 
   cambiarBeneficio(b: Beneficio) {
     this.message = '';
-    if (!this.user?.id) { this.message = 'No hay usuario en sesión.'; return; }
+    const u = this.user;
+    if (!u?.id) { this.message = 'No hay usuario en sesión.'; return; }
 
     this.loading = true;
-    this.usersApi.update(this.user.id, { beneficio: b }).subscribe({
-      next: (u: UserDTO) => {
-        this.user = { ...this.user, ...u };
-        this.auth.registerDemo(u);
+    this.usersApi.updateSafe(u.id, { beneficio: b }).subscribe({
+      next: (updated: UserDTO) => {
+        this.auth.setUser({ ...updated, loginAt: new Date().toISOString() });
         this.message = 'Beneficio actualizado.';
-        this.loading = false;
       },
-      error: () => { this.message = 'No se pudo actualizar el beneficio.'; this.loading = false; }
+      error: () => { this.message = 'No se pudo actualizar el beneficio.'; },
+      complete: () => { this.loading = false; }
     });
   }
 }

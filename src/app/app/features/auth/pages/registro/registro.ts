@@ -29,24 +29,31 @@ export class RegistroComponent {
   }
 
   onSubmit() {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-    const payload: UserDTO = {
-      nombre: this.form.value.nombre,
-      email: this.form.value.email,
-      password: this.form.value.password,
-      uidTarjeta: this.form.value.uidTarjeta,
-      saldo: Number(this.form.value.saldo || 0),
-      beneficio: this.form.value.beneficio,
+    // MockAPI genera el ID automáticamente, por eso omitimos 'id'
+    const payload: Omit<UserDTO, 'id'> = {
+      nombre: this.form.value.nombre!,
+      email: this.form.value.email!,
+      password: this.form.value.password!,
+      uidTarjeta: this.form.value.uidTarjeta!,
+      saldo: this.form.value.saldo ?? 0,
+      beneficio: this.form.value.beneficio ?? 'ninguno',
       createdAt: new Date().toISOString()
     };
 
     this.usersApi.create(payload).subscribe({
       next: (user) => {
-        // reutilizamos tu flujo: guardar sesión local y navegar
-        this.auth.registerDemo(user); // autologin + /dashboard
+        // Guardar sesión local y navegar al panel
+        this.auth.registerDemo(user);
       },
-      error: () => alert('No se pudo registrar en el API. Intentá de nuevo.')
+      error: (err) => {
+        console.error('Error al registrar en MockAPI', err);
+        alert('No se pudo registrar en el API. Intentá de nuevo.');
+      }
     });
   }
 }
