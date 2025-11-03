@@ -129,17 +129,21 @@
 
         <article class="tile">
           <h3>Cambiar beneficio</h3>
+          <p class="lead">
+            Podés ver el beneficio que tenés asignado. Este fue definido al momento del registro
+            y no puede modificarse desde esta sección.
+          </p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <!-- ✅ botones con estado activo y disabled durante la llamada -->
+            <!-- Botones solo visuales: deshabilitados y con el actual resaltado -->
             <button
               class="pill outline"
               *ngFor="let b of beneficios"
-              (click)="cambiarBeneficio(b)"
-              [disabled]="loading"
+              [disabled]="true"
               [class.active]="(user$ | async)?.beneficio === b">
               {{ b }}
             </button>
           </div>
+          <small class="hint">Si necesitás actualizar tu beneficio, contactá con Soporte.</small>
         </article>
       </div>
 
@@ -190,7 +194,7 @@
           </ul>
         </article>
 
-      <article class="tile">
+        <article class="tile">
           <h3>Recomendaciones</h3>
           <ul>
             <li>No compartas tu tarjeta ni tu contraseña.</li>
