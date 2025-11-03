@@ -110,3 +110,29 @@ select option:hover {
   background-color: #c8f5ef;
   color: #06322f;
 }
+
+/* Campo bloqueado (saldo inicial) */
+input[disabled],
+input[readonly] {
+  background-color: rgba(255, 255, 255, 0.05); /* gris/verde muy suave */
+  color: #c9d1d9; /* texto gris claro */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+}
+
+/* Evitar que parezca error al tener focus */
+input[disabled]:focus,
+input[readonly]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Texto explicativo debajo */
+.hint {
+  display: block;
+  font-size: 0.85rem;
+  color: #a1b2b8; /* gris azulado suave */
+  margin-top: 4px;
+  font-style: italic;
+}
+

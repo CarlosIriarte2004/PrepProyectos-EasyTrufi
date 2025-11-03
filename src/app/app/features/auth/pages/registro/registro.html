@@ -40,18 +40,27 @@
         <input id="uidTarjeta" type="text" formControlName="uidTarjeta" placeholder="Ej. 04A2-7F9C-1B" />
         <div class="error" *ngIf="form.get('uidTarjeta')?.touched && form.get('uidTarjeta')?.invalid">
           <small *ngIf="form.get('uidTarjeta')?.errors?.['required']">El UID es obligatorio.</small>
-          <small *ngIf="form.get('uidTarjeta')?.errors?.['pattern']">Formato inválido (6–32, letras/números y - : _).</small>
+          <small *ngIf="form.get('uidTarjeta')?.errors?.['pattern']">
+            Formato inválido (3–40, letras/números y - : _).
+          </small>
         </div>
       </div>
 
-      <!-- Saldo -->
+      <!-- Saldo (bloqueado) -->
       <div class="form-group">
         <label for="saldo">Saldo inicial (Bs.)</label>
-        <input id="saldo" type="number" formControlName="saldo" min="0" step="0.01" placeholder="0.00" />
-        <div class="error" *ngIf="form.get('saldo')?.touched && form.get('saldo')?.invalid">
-          <small *ngIf="form.get('saldo')?.errors?.['required']">El saldo es obligatorio.</small>
-          <small *ngIf="form.get('saldo')?.errors?.['min']">No puede ser negativo.</small>
-        </div>
+        <input
+          id="saldo"
+          type="number"
+          formControlName="saldo"
+          [readonly]="true"
+          [disabled]="true"
+          min="0"
+          step="0.01"
+          placeholder="0.00"
+          aria-label="Saldo inicial fijo en 0"
+        />
+        <small class="hint">El saldo inicial es 0. Podrás recargar luego.</small>
       </div>
 
       <!-- Beneficio -->
@@ -63,10 +72,10 @@
           <option value="tercera_edad">Adulto mayor</option>
           <option value="discapacidad">Discapacidad</option>
         </select>
-      <div class="error" *ngIf="form.get('beneficio')?.touched && form.get('beneficio')?.invalid">
-    <small>Seleccioná un beneficio.</small>
-  </div>
-</div>
+        <div class="error" *ngIf="form.get('beneficio')?.touched && form.get('beneficio')?.invalid">
+          <small>Seleccioná un beneficio.</small>
+        </div>
+      </div>
 
       <button class="btn" type="submit" [disabled]="form.invalid">Crear cuenta</button>
     </form>

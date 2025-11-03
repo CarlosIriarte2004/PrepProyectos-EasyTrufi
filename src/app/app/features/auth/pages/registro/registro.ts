@@ -23,7 +23,10 @@ export class RegistroComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       uidTarjeta: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9\-:_]{3,40}$/)]],
-      saldo: [0, [Validators.required, Validators.min(0)]],
+
+      // ✅ Saldo bloqueado en 0 (no editable y no participa en validación)
+      saldo: this.fb.control({ value: 0, disabled: true }),
+
       beneficio: ['ninguno', [Validators.required]]
     });
   }
@@ -34,20 +37,21 @@ export class RegistroComponent {
       return;
     }
 
-    // MockAPI genera el ID automáticamente, por eso omitimos 'id'
+    // getRawValue incluye controles deshabilitados, pero igual forzamos 0 por seguridad
+    const raw = this.form.getRawValue();
+
     const payload: Omit<UserDTO, 'id'> = {
-      nombre: this.form.value.nombre!,
-      email: this.form.value.email!,
-      password: this.form.value.password!,
-      uidTarjeta: this.form.value.uidTarjeta!,
-      saldo: this.form.value.saldo ?? 0,
-      beneficio: this.form.value.beneficio ?? 'ninguno',
+      nombre: raw['nombre']!,
+      email: raw['email']!,
+      password: raw['password']!,
+      uidTarjeta: raw['uidTarjeta']!,
+      saldo: 0, // 🔒 fuerza 0
+      beneficio: raw['beneficio'] ?? 'ninguno',
       createdAt: new Date().toISOString()
     };
 
     this.usersApi.create(payload).subscribe({
       next: (user) => {
-        // Guardar sesión local y navegar al panel
         this.auth.registerDemo(user);
       },
       error: (err) => {
