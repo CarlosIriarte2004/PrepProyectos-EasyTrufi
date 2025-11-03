@@ -67,18 +67,30 @@ export class DashboardPanelComponent {
     });
   }
 
+  // ✅ BENEFICIO corregido
   cambiarBeneficio(b: Beneficio) {
     this.message = '';
     const u = this.user;
     if (!u?.id) { this.message = 'No hay usuario en sesión.'; return; }
+    if (u.beneficio === b) { this.message = 'Ya tenés este beneficio.'; return; }
 
     this.loading = true;
+
+    // 🔸 Optimistic UI: reflejar el cambio al instante
+    const beneficioAnterior = u.beneficio;
+    this.auth.updateUserInStore({ beneficio: b });
+
+    // 🔸 Guardar en MockAPI (GET→PUT)
     this.usersApi.updateSafe(u.id, { beneficio: b }).subscribe({
       next: (updated: UserDTO) => {
         this.auth.setUser({ ...updated, loginAt: new Date().toISOString() });
-        this.message = 'Beneficio actualizado.';
+        this.message = `Beneficio actualizado a "${b}".`;
       },
-      error: () => { this.message = 'No se pudo actualizar el beneficio.'; },
+      error: () => {
+        // Revertir si hay error
+        this.auth.updateUserInStore({ beneficio: beneficioAnterior });
+        this.message = 'No se pudo actualizar el beneficio.';
+      },
       complete: () => { this.loading = false; }
     });
   }

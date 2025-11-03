@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, map } from 'rxjs';
 
 export type Beneficio = 'ninguno' | 'estudiantil' | 'tercera_edad' | 'discapacidad';
 
 export interface UserDTO {
-  id?: string;
+  id: string;             // MockAPI usa id:string
   nombre: string;
   email: string;
-  password: string;
+  password?: string;
   uidTarjeta: string;
   saldo: number;
   beneficio: Beneficio;
   createdAt: string;
+  loginAt?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -22,8 +23,16 @@ export class UsersApi {
 
   constructor(private http: HttpClient) {}
 
-  create(user: UserDTO): Observable<UserDTO> {
+  create(user: Omit<UserDTO, 'id'>): Observable<UserDTO> {
     return this.http.post<UserDTO>(this.base, user);
+  }
+
+  getById(id: string): Observable<UserDTO> {
+    return this.http.get<UserDTO>(`${this.base}/${id}`);
+  }
+
+  getAll(): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(this.base);
   }
 
   findByEmailAndPassword(email: string, password: string): Observable<UserDTO[]> {
@@ -36,11 +45,14 @@ export class UsersApi {
     return this.http.get<UserDTO[]>(this.base, { params });
   }
 
-  update(id: string, patch: Partial<UserDTO>): Observable<UserDTO> {
-    return this.http.put<UserDTO>(`${this.base}/${id}`, patch);
-  }
-
-  getAll(): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(this.base);
+  /**
+   * MockAPI: PUT reemplaza el recurso completo.
+   * Para no perder campos, primero leemos el usuario actual y hacemos merge.
+   */
+  updateSafe(id: string, patch: Partial<UserDTO>): Observable<UserDTO> {
+    return this.getById(id).pipe(
+      map(current => ({ ...current, ...patch } as UserDTO)),
+      switchMap(merged => this.http.put<UserDTO>(`${this.base}/${id}`, merged))
+    );
   }
 }

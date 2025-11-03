@@ -132,3 +132,27 @@ ul, ol { color: #eafffb; }
   .sidebar { display: none; }
   .main { padding: 18px; }
 }
+
+.pill.active { outline: 2px solid rgba(255,255,255,.6); }
+
+
+/* Mejora de visibilidad para los botones de beneficio */
+.pill.outline {
+  color: #fff;               /* texto blanco */
+  border: 1px solid rgba(255,255,255,0.5);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.pill.outline:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.8);
+}
+
+/* Botón activo */
+.pill.active {
+  background: #00bfa6;
+  border-color: #00bfa6;
+  color: #fff;
+  font-weight: 600;
+}

@@ -130,7 +130,13 @@
         <article class="tile">
           <h3>Cambiar beneficio</h3>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="pill outline" *ngFor="let b of beneficios" (click)="cambiarBeneficio(b)">
+            <!-- ✅ botones con estado activo y disabled durante la llamada -->
+            <button
+              class="pill outline"
+              *ngFor="let b of beneficios"
+              (click)="cambiarBeneficio(b)"
+              [disabled]="loading"
+              [class.active]="(user$ | async)?.beneficio === b">
               {{ b }}
             </button>
           </div>
@@ -184,7 +190,7 @@
           </ul>
         </article>
 
-        <article class="tile">
+      <article class="tile">
           <h3>Recomendaciones</h3>
           <ul>
             <li>No compartas tu tarjeta ni tu contraseña.</li>
