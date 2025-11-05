@@ -1,4 +1,3 @@
-// src/app/core/models/user.model.ts
 export type Beneficio = 'ninguno' | 'estudiantil' | 'tercera_edad' | 'discapacidad';
 
 export interface EasyTrufiUser {
