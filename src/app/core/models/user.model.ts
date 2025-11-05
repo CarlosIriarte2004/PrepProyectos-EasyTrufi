@@ -13,7 +13,6 @@ export interface EasyTrufiUser {
   loginAt?: string;
 }
 
-/** Payload para crear usuario en MockAPI */
 export interface UserDTO {
   nombre: string;
   email: string;

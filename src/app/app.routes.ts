@@ -31,9 +31,9 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./app/features/dashbord/pages/panel/panel') // tu carpeta es "dashbord"
+      import('./app/features/dashbord/pages/panel/panel') 
         .then(m => m.DashboardPanelComponent),
-    canActivate: [authGuard] // ✅ protege esta ruta
+    canActivate: [authGuard] 
   },
 
   // Cualquier otra ruta → inicio

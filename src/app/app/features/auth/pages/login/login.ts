@@ -32,19 +32,17 @@ export class LoginComponent {
   });
 
   // -------- estado para login por tarjeta ----------
-  useCard = false; // lo usa el template para mostrar/ocultar formularios
+  useCard = false; 
   uidForm = new FormGroup({
     uidTarjeta: new FormControl('', { nonNullable: true, validators: [Validators.required] })
   });
 
-  // -------- otros flags ----------
   hide = true;
   loading = false;
   errorMsg = '';
 
   constructor(private auth: AuthService, private usersApi: UsersApi) {}
 
-  // Autocompletado fuerte en el template
   get f(): LoginForm['controls'] { return this.form.controls; }
 
   // -------- submit por email/password ----------

@@ -1,4 +1,3 @@
-/* ------ Layout base ------ */
 .layout {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -7,7 +6,6 @@
 }
 .layout.collapse { grid-template-columns: 0 1fr; }
 
-/* ------ Sidebar ------ */
 .sidebar {
   position: sticky;
   top: 0;
@@ -45,7 +43,6 @@
 
 .foot { position: absolute; bottom: 12px; left: 14px; color: #a5d5cf; }
 
-/* ------ Main ------ */
 .main {
   background: linear-gradient(180deg, #0b4a44 0%, #0a433e 100%);
   padding: 22px 26px;
@@ -56,7 +53,6 @@
 
 .section, .topbar { position: relative; z-index: 1; }
 
-/* ------ Topbar ------ */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
   background: #f6fffe; color: #06302b;
@@ -74,7 +70,6 @@
 .pill.outline { background: transparent; color: #0f5b53; }
 .pill.ghost { background: transparent; border-color: rgba(255,255,255,.28); color: #eafffb; }
 
-/* ------ Tipografía y bloques ------ */
 h1 { font-size: 38px; color: #ffffff; margin-bottom: 10px; }
 h1 span { color: #b7ffee; }
 h3 { color: #ffffff; margin: 0 0 10px; }
@@ -97,7 +92,6 @@ ul, ol { color: #eafffb; }
   padding: 14px 16px; border-radius: 14px;
 }
 
-/* ------ Hero ------ */
 .hero {
   display: grid; 
   grid-template-columns: 1.2fr .8fr; 
@@ -108,7 +102,6 @@ ul, ol { color: #eafffb; }
 .hero-text .actions { display: flex; gap: 10px; margin: 8px 0 12px; }
 .hero-media { display: flex; justify-content: flex-end; align-items: center; }
 
-/* Imagen del hero (desde assets) */
 .photo{
   width: min(340px, 26vw);
   height: auto;
@@ -124,7 +117,6 @@ ul, ol { color: #eafffb; }
   transform: scale(1.02);
 }
 
-/* ------ Grids ------ */
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
 
@@ -142,7 +134,6 @@ ul, ol { color: #eafffb; }
 
 .pill.active { outline: 2px solid rgba(255,255,255,.6); }
 
-/* Mejora de visibilidad para los botones de beneficio */
 .pill.outline {
   color: #fff;
   border: 1px solid rgba(255,255,255,0.5);
@@ -154,7 +145,6 @@ ul, ol { color: #eafffb; }
   border-color: rgba(255,255,255,0.8);
 }
 
-/* Botón activo */
 .pill.active {
   background: #00bfa6;
   border-color: #00bfa6;

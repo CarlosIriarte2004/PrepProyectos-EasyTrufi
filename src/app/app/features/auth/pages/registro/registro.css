@@ -99,13 +99,11 @@ select {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Color del texto de las opciones desplegadas */
 select option {
-  color: #0a433e;          /* texto oscuro dentro del desplegable */
-  background-color: #eafffb; /* fondo claro al abrir el menú */
+  color: #0a433e;         
+  background-color: #eafffb; 
 }
 
-/* Hover más visible */
 select option:hover {
   background-color: #c8f5ef;
   color: #06322f;
@@ -114,24 +112,22 @@ select option:hover {
 /* Campo bloqueado (saldo inicial) */
 input[disabled],
 input[readonly] {
-  background-color: rgba(255, 255, 255, 0.05); /* gris/verde muy suave */
-  color: #c9d1d9; /* texto gris claro */
+  background-color: rgba(255, 255, 255, 0.05); 
+  color: #c9d1d9; 
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: not-allowed;
 }
 
-/* Evitar que parezca error al tener focus */
 input[disabled]:focus,
 input[readonly]:focus {
   outline: none;
   box-shadow: none;
 }
 
-/* Texto explicativo debajo */
 .hint {
   display: block;
   font-size: 0.85rem;
-  color: #a1b2b8; /* gris azulado suave */
+  color: #a1b2b8; 
   margin-top: 4px;
   font-style: italic;
 }

@@ -88,7 +88,6 @@ export class DashboardPanelComponent {
     });
   }
 
-  // Mantengo la función original (ya no se usa desde el HTML)
   cambiarBeneficio(b: Beneficio) {
     this.message = '';
     const u = this.user;

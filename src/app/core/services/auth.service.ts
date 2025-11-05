@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 export type Beneficio = 'ninguno' | 'estudiantil' | 'tercera_edad' | 'discapacidad';
 
 export interface EasyTrufiUser {
-  id: string;                 // <- NECESARIO para actualizar en MockAPI
+  id: string;                
   nombre: string;
   email: string;
   password?: string;
@@ -48,7 +48,6 @@ export class AuthService {
     this.setUser(updated, !!localStorage.getItem(this.userKey));
   }
 
-  /** Usar con el DTO real que devuelve MockAPI (incluye id:string) */
   registerDemo(payload: any, remember = true): void {
     const user: EasyTrufiUser = {
       id: String(payload.id),
@@ -73,7 +72,7 @@ export class AuthService {
       this.router.navigate(['/dashboard']);
       return;
     }
-    // “dummy” local si no consultás MockAPI en login:
+    
     const dummy: EasyTrufiUser = {
       id: 'local-demo',
       nombre: 'Usuario',

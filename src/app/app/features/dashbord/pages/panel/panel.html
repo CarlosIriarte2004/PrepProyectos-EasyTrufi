@@ -29,7 +29,6 @@
       </div>
     </header>
 
-    <!-- BANNER DE USUARIO (reactivo con async) -->
     <section class="section" *ngIf="user$ | async as u">
       <div class="callout" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
         <div>
@@ -134,7 +133,6 @@
             y no puede modificarse desde esta sección.
           </p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <!-- Botones solo visuales: deshabilitados y con el actual resaltado -->
             <button
               class="pill outline"
               *ngFor="let b of beneficios"

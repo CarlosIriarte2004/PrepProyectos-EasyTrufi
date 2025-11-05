@@ -6,7 +6,7 @@ import { Observable, switchMap, map } from 'rxjs';
 export type Beneficio = 'ninguno' | 'estudiantil' | 'tercera_edad' | 'discapacidad';
 
 export interface UserDTO {
-  id: string;             // MockAPI usa id:string
+  id: string;             
   nombre: string;
   email: string;
   password?: string;
@@ -45,10 +45,6 @@ export class UsersApi {
     return this.http.get<UserDTO[]>(this.base, { params });
   }
 
-  /**
-   * MockAPI: PUT reemplaza el recurso completo.
-   * Para no perder campos, primero leemos el usuario actual y hacemos merge.
-   */
   updateSafe(id: string, patch: Partial<UserDTO>): Observable<UserDTO> {
     return this.getById(id).pipe(
       map(current => ({ ...current, ...patch } as UserDTO)),

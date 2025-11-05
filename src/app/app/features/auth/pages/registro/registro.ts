@@ -24,7 +24,7 @@ export class RegistroComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       uidTarjeta: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9\-:_]{3,40}$/)]],
 
-      // ✅ Saldo bloqueado en 0 (no editable y no participa en validación)
+      // Saldo bloqueado en 0 (no editable y no participa en validación)
       saldo: this.fb.control({ value: 0, disabled: true }),
 
       beneficio: ['ninguno', [Validators.required]]
@@ -37,7 +37,6 @@ export class RegistroComponent {
       return;
     }
 
-    // getRawValue incluye controles deshabilitados, pero igual forzamos 0 por seguridad
     const raw = this.form.getRawValue();
 
     const payload: Omit<UserDTO, 'id'> = {
